@@ -6,6 +6,7 @@ import ComponentsModule from '../components/components.module'
 
 import Shopping from './shopping.component'
 import ShoppingService from './shopping.service'
+import ProductService from './product.service'
 
 import ShoppingRouting from './shopping.routing'
 
@@ -27,7 +28,7 @@ export default class ShoppingModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: ShoppingModule,
-      providers: [ShoppingService],
+      providers: [ShoppingService, ProductService],
     }
   }
 }

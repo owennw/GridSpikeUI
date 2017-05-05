@@ -16,8 +16,24 @@
       </dx-data-grid>
     </div>
     <div *ngIf="shop">
-      <dx-data-grid [dataSource]="shop.products">
-        <dxi-column dataField="product.name" caption="Product"></dxi-column>
+      <dx-data-grid
+        [dataSource]="shop.products"
+      >
+        <dxo-editing
+          mode="row"
+          [allowUpdating]="true"
+          [allowDeleting]="true"
+          [allowAdding]="true"
+        >
+        </dxo-editing>
+        <dxi-column dataField="product.id" caption="Product">
+          <dxo-lookup
+            [dataSource]="products"
+            displayExpr="name"
+            valueExpr="id"
+          >
+          </dxo-lookup>
+        </dxi-column>
         <dxi-column dataField="quantity" caption="Quantity"></dxi-column>
         <dxi-column dataField="product.price" caption="Price per item"></dxi-column>
         <dxi-column dataField="price" caption="Total"></dxi-column>
