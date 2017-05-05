@@ -4,7 +4,7 @@
   </page-header>
   <page-body>
     <a *ngFor="let customer of customers" (click)="onSelect(customer)">
-      {{customer.firstName}} {{customer.lastName}}
+      {{customer.name}}
       {{customer.emailAddress}}  
     </a>
   </page-body>

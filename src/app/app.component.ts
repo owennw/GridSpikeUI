@@ -13,7 +13,12 @@ import { Component, ViewEncapsulation } from '@angular/core'
     </nav>
     <router-outlet></router-outlet>
   `,
-  styleUrls: [ '../styles/styles.css', './app.component.css' ],
+  styleUrls: [
+    '../styles/styles.css',
+    '../../node_modules/devextreme/dist/css/dx.common.css',
+    '../../node_modules/devextreme/dist/css/dx.light.css',
+    './app.component.css',
+  ],
   encapsulation: ViewEncapsulation.None,
 })
 

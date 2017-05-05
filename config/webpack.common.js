@@ -37,6 +37,18 @@ module.exports = {
       },
       {
         test: /\.css$/,
+        include: [
+          helpers.root('node_modules/devextreme/dist/css/dx.common.css'),
+          helpers.root('node_modules/devextreme/dist/css/dx.light.css'),
+        ],
+        use: [
+          'css-to-string-loader',
+          'style-loader',
+          'css-loader?importLoaders=1',
+        ],
+      },
+      {
+        test: /\.css$/,
         include: helpers.root('src', 'styles', 'styles.css'),
         use: [
           'css-to-string-loader',
@@ -47,7 +59,11 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        exclude: helpers.root('src', 'styles', 'styles.css'),
+        exclude: [
+          helpers.root('src', 'styles', 'styles.css'),
+          helpers.root('node_modules/devextreme/dist/css/dx.common.css'),
+          helpers.root('node_modules/devextreme/dist/css/dx.light.css'),
+        ],
         use: [
           'css-to-string-loader',
           'css-loader?importLoaders=1',

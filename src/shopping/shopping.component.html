@@ -1,0 +1,13 @@
+<page>
+  <page-header>
+    <page-title>Shopping</page-title>
+  </page-header>
+  <page-body>
+    <dx-data-grid [dataSource]="shopping">      
+      <dxi-column dataField="customer.name" caption="Name"></dxi-column>
+      <dxi-column dataField="date" caption="Date"></dxi-column>
+      <dxi-column dataField="numberOfItems" caption="Number of Items"></dxi-column>
+      <dxi-column dataField="totalCost" caption="Total Cost"></dxi-column>
+    </dx-data-grid>
+  </page-body>
+</page>
