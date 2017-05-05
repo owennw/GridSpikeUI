@@ -12,6 +12,7 @@ import ComponentsModule from '../components/components.module'
 import Dashboard from '../dashboard/dashboard.component'
 
 import CustomersModule from '../customers/customers.module'
+import ShoppingModule from '../shopping/shopping.module'
 
 @NgModule({
   imports: [
@@ -21,6 +22,7 @@ import CustomersModule from '../customers/customers.module'
     AppRoutingModule,
     ComponentsModule,
     CustomersModule.forRoot(),
+    ShoppingModule.forRoot(),
   ],
   declarations: [
     App,

@@ -16,7 +16,7 @@ export default class CustomersService {
       return this.http
         .get(this.customersUrl, { withCredentials: true })
         .toPromise()
-        .then(response => response.json().$values as ICustomer[])
+        .then(response => response.json() as ICustomer[])
         .catch(this.handleError)
     }
 
