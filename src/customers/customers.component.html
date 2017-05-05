@@ -1,0 +1,11 @@
+<page>
+  <page-header>
+    <page-title>Customers</page-title>
+  </page-header>
+  <page-body>
+    <a *ngFor="let customer of customers" (click)="onSelect(customer)">
+      {{customer.name}}
+      {{customer.emailAddress}}  
+    </a>
+  </page-body>
+</page>
