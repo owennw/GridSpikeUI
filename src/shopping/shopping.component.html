@@ -3,11 +3,25 @@
     <page-title>Shopping</page-title>
   </page-header>
   <page-body>
-    <dx-data-grid [dataSource]="shopping">      
-      <dxi-column dataField="customer.name" caption="Name"></dxi-column>
-      <dxi-column dataField="date" dataType="date" format="longDateLongTime" caption="Date"></dxi-column>
-      <dxi-column dataField="numberOfItems" caption="Number of Items"></dxi-column>
-      <dxi-column dataField="totalCost" caption="Total Cost"></dxi-column>
-    </dx-data-grid>
+    <div *ngIf="!selectedPurchase">
+      <dx-data-grid
+        [dataSource]="shopping"
+        selection="single"
+        (onSelectionChanged)="onSelectionChangedHandler($event)"
+      >
+        <dxi-column dataField="customer.name" caption="Name"></dxi-column>
+        <dxi-column dataField="date" dataType="date" format="longDateLongTime" caption="Date"></dxi-column>
+        <dxi-column dataField="numberOfItems" caption="Number of Items"></dxi-column>
+        <dxi-column dataField="totalCost" caption="Total Cost"></dxi-column>
+      </dx-data-grid>
+    </div>
+    <div *ngIf="shop">
+      <dx-data-grid [dataSource]="shop.products">
+        <dxi-column dataField="product.name" caption="Product"></dxi-column>
+        <dxi-column dataField="quantity" caption="Quantity"></dxi-column>
+        <dxi-column dataField="product.price" caption="Price per item"></dxi-column>
+        <dxi-column dataField="price" caption="Total"></dxi-column>
+      </dx-data-grid>
+    </div>
   </page-body>
 </page>

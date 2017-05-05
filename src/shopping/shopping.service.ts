@@ -1,13 +1,14 @@
 import { Injectable } from '@angular/core'
 import { Http } from '@angular/http'
 
-import { IShopping } from './shopping'
+import { IShopping, IShop } from './shopping'
 
 import { baseUrl } from '../config'
 
 @Injectable()
 export default class ShoppingService {
   private shoppingUrl = `${baseUrl}/shopping`
+  private shopUrl = `${baseUrl}/shop`
 
   constructor(private http: Http) {
   }
@@ -17,6 +18,14 @@ export default class ShoppingService {
       .get(this.shoppingUrl)
       .toPromise()
       .then(response => response.json() as IShopping[])
+      .catch(this.handleError)
+  }
+
+  getShop(id: number): Promise<IShop> {
+    return this.http
+      .get(`${this.shopUrl}/${id}`)
+      .toPromise()
+      .then(response => response.json() as IShop)
       .catch(this.handleError)
   }
 
