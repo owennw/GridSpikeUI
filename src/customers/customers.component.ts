@@ -87,11 +87,15 @@ export default class Customers implements OnInit {
   }
 
   ngOnInit(): void {
-    this.customersService.getAll()
-      .then(customers => this.customers = customers)
+    this.getCustomers()
 
     this.productService.getAll()
       .then(products => this.products = products)
+  }
+
+  private getCustomers(): Promise<ICustomer[]> {
+    return this.customersService.getAll()
+      .then(customers => this.customers = customers)
   }
 
   private addCustomer(customer: ICustomer) {
@@ -138,7 +142,10 @@ export default class Customers implements OnInit {
     }
 
     this.customersService.post(row.data)
-      .then((customer: any) => this.proxy.invoke('add', customer))
+      .then((customer: any) => {
+        this.getCustomers()
+          .then(() => this.proxy.invoke('add', customer))
+      })
   }
 
   onRowUpdated(event: any) {
@@ -149,10 +156,17 @@ export default class Customers implements OnInit {
     }
 
     this.customersService.put(row.data)
+      .then((customer: any) => {
+        this.getCustomers()
+          .then(() => this.proxy.invoke('add', customer))
+      })
   }
 
   onRowRemoved(event: any) {
     this.customersService.delete(event.data)
-      .then((customer: any) => this.proxy.invoke('delete', customer))
+      .then((customer: any) => {
+        this.getCustomers()
+          .then(() => this.proxy.invoke('delete', customer))
+      })
   }
 }
