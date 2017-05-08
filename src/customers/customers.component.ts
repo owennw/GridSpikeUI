@@ -8,6 +8,7 @@ import ProductService, { IProduct } from '../product.service'
 interface IRow {
   unsavedKey: string
   savedKey: string
+  data: any
 }
 
 class NewRow implements IRow {
@@ -20,6 +21,10 @@ class NewRow implements IRow {
   get savedKey() {
     return this.row.key.__KEY__
   }
+
+  get data() {
+    return this.row.data
+  }
 }
 
 class UpdatedRow implements IRow {
@@ -31,6 +36,10 @@ class UpdatedRow implements IRow {
 
   get savedKey() {
     return this.unsavedKey
+  }
+
+  get data() {
+    return this.row.key
   }
 }
 
@@ -65,6 +74,7 @@ export default class Customers implements OnInit {
   ngOnInit(): void {
     this.customersService.getAll()
       .then(customers => this.customers = customers)
+      .then(() => console.log(this.customers))
 
     this.productService.getAll()
       .then(products => this.products = products)
@@ -97,7 +107,7 @@ export default class Customers implements OnInit {
       return
     }
 
-    this.customersService.post(event.data)
+    this.customersService.post(row.data)
   }
 
   onRowUpdated(event: any) {
@@ -107,7 +117,7 @@ export default class Customers implements OnInit {
       return
     }
 
-    this.customersService.put(event.key)
+    this.customersService.put(row.data)
   }
 
   onRowRemoved(event: any) {
