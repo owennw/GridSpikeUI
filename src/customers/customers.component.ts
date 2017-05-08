@@ -83,7 +83,6 @@ export default class Customers implements OnInit {
     this.proxy.on('deleteCustomer', (customer) => this.deleteCustomer(customer))
 
     this.connection.start()
-      .done(() => console.log('connection started'))
       .fail((error: any) => console.error(error))
   }
 
@@ -96,8 +95,6 @@ export default class Customers implements OnInit {
   }
 
   private addCustomer(customer: ICustomer) {
-    console.log('add called')
-    console.log(customer)
     const index = this.customers.map(c => c.id).indexOf(customer.id)
       if (index > -1) {
         this.customers[index] = customer
@@ -156,5 +153,6 @@ export default class Customers implements OnInit {
 
   onRowRemoved(event: any) {
     this.customersService.delete(event.data)
+      .then((customer: any) => this.proxy.invoke('delete', customer))
   }
 }

@@ -35,11 +35,11 @@ export default class CustomersService {
         .catch(this.handleError)
   }
 
-  put(customer: ICustomer) {
+  put(customer: ICustomer): Promise<ICustomer> {
     const body = JSON.stringify(customer)
     const options = createHttpOptions()
 
-    this.http
+    return this.http
       .put(this.customersUrl, body, options)
       .toPromise()
       .then(response => response.json())
@@ -57,10 +57,10 @@ export default class CustomersService {
       .catch(this.handleError)
   }
 
-  delete(customer: ICustomer) {
+  delete(customer: ICustomer): Promise<ICustomer> {
     const options = createHttpOptions(customer)
 
-    this.http
+    return this.http
       .delete(this.customersUrl, options)
       .toPromise()
       .then(response => response.json())
