@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'
-import { Http } from '@angular/http'
+import { Http, Headers, RequestOptions } from '@angular/http'
 
 import { ICustomer } from './customer'
 
@@ -12,7 +12,7 @@ export default class CustomersService {
   constructor(private http: Http) {
   }
 
-  getCustomers(): Promise<ICustomer[]> {
+  getAll(): Promise<ICustomer[]> {
       return this.http
         .get(this.customersUrl, { withCredentials: true })
         .toPromise()
@@ -20,12 +20,51 @@ export default class CustomersService {
         .catch(this.handleError)
     }
 
-  getCustomer(id: number): Promise<ICustomer> {
+  get(id: number): Promise<ICustomer> {
     return this.http
         .get(`${this.customersUrl}/${id}`, { withCredentials: true })
         .toPromise()
         .then(response => response.json() as ICustomer)
         .catch(this.handleError)
+  }
+
+  put(customer: ICustomer) {
+    const body = JSON.stringify(customer)
+    console.log(body)
+    const headers = new Headers({ 'Content-Type': 'application/json' })
+    const options = new RequestOptions({ headers: headers })
+
+    this.http
+      .put(this.customersUrl, body, options)
+      .toPromise()
+      .then(response => console.log(response.json()))
+      .catch(this.handleError)
+  }
+
+  post(customer: ICustomer) {
+    const body = JSON.stringify(customer)
+    console.log(body)
+    const headers = new Headers({ 'Content-Type': 'application/json' })
+    const options = new RequestOptions({ headers: headers })
+
+    this.http
+      .post(this.customersUrl, body, options)
+      .toPromise()
+      .then(response => response.json())
+      .catch(this.handleError)
+  }
+
+  delete(customer: ICustomer) {
+    const body = JSON.stringify(customer)
+    console.log(body)
+    const headers = new Headers({ 'Content-Type': 'application/json' })
+    const options = new RequestOptions({ headers: headers, body: body })
+
+    this.http
+      .delete(this.customersUrl, options)
+      .toPromise()
+      .then(response => response.json())
+      .catch(this.handleError)
   }
 
   private handleError(error: any): Promise<any> {

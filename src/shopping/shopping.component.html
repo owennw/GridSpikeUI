@@ -9,7 +9,8 @@
         selection="single"
         (onSelectionChanged)="onSelectionChangedHandler($event)"
       >
-        <dxi-column dataField="customer.name" caption="Name"></dxi-column>
+        <dxi-column dataField="customer.firstName" caption="Forename(s)"></dxi-column>
+        <dxi-column dataField="customer.lastName" caption="Surname"></dxi-column>
         <dxi-column dataField="date" dataType="date" format="longDateLongTime" caption="Date"></dxi-column>
         <dxi-column dataField="numberOfItems" caption="Number of Items"></dxi-column>
         <dxi-column dataField="totalCost" caption="Total Cost"></dxi-column>

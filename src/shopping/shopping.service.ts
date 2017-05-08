@@ -13,7 +13,7 @@ export default class ShoppingService {
   constructor(private http: Http) {
   }
 
-  getShopping(): Promise<IShopping[]> {
+  getAll(): Promise<IShopping[]> {
     return this.http
       .get(this.shoppingUrl)
       .toPromise()
@@ -21,7 +21,7 @@ export default class ShoppingService {
       .catch(this.handleError)
   }
 
-  getShop(id: number): Promise<IShop> {
+  get(id: number): Promise<IShop> {
     return this.http
       .get(`${this.shopUrl}/${id}`)
       .toPromise()

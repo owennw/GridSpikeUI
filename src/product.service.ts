@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Http } from '@angular/http'
 
-import { IProduct } from './shopping'
-
-import { baseUrl } from '../config'
+import { baseUrl } from './config'
 
 @Injectable()
 export default class ProductService {
@@ -12,7 +10,7 @@ export default class ProductService {
   constructor(private http: Http) {
   }
 
-  getProducts(): Promise<IProduct[]> {
+  getAll(): Promise<IProduct[]> {
     return this.http
       .get(this.products)
       .toPromise()
@@ -24,4 +22,10 @@ export default class ProductService {
     console.error('An error occurred', error)
     return Promise.reject(error.message || error)
   }
+}
+
+export interface IProduct {
+  id: number
+  name: string
+  price: number
 }

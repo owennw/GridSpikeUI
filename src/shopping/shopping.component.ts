@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 
-import { IShopping, IPurchase, IShop, IProduct } from './shopping'
+import { IShopping, IPurchase, IShop } from './shopping'
 import ShoppingService from './shopping.service'
-import ProductService from './product.service'
+import ProductService, { IProduct } from '../product.service'
 
 @Component({
   templateUrl: './shopping.component.html',
@@ -22,16 +22,16 @@ export default class Shopping implements OnInit {
   }
 
   ngOnInit(): void {
-    this.shoppingService.getShopping()
+    this.shoppingService.getAll()
       .then(shopping => this.shopping = shopping)
 
-    this.productService.getProducts()
+    this.productService.getAll()
       .then(products => this.products = products)
   }
 
   onSelectionChangedHandler(e: any) {
     this.selectedPurchase = e.selectedRowsData[0].purchase as IPurchase
-    this.shoppingService.getShop(this.selectedPurchase.id)
+    this.shoppingService.get(this.selectedPurchase.id)
       .then(shop => this.shop = shop)
   }
 }
