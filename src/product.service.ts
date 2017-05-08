@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core'
 import { Http } from '@angular/http'
 
-import { baseUrl } from './config'
+import { apiUri } from './config'
 
 @Injectable()
 export default class ProductService {
-  private products = `${baseUrl}/products`
+  private products = `${apiUri}/products`
 
   constructor(private http: Http) {
   }

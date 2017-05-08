@@ -1,5 +1,7 @@
-// Angular
+import 'expose-loader?jQuery!jquery'
+import '../node_modules/signalr/jquery.signalR.js'
 
+// Angular
 import '@angular/platform-browser'
 import '@angular/platform-browser-dynamic'
 import '@angular/core'

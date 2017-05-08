@@ -3,12 +3,12 @@ import { Http } from '@angular/http'
 
 import { IShopping, IShop } from './shopping'
 
-import { baseUrl } from '../config'
+import { apiUri } from '../config'
 
 @Injectable()
 export default class ShoppingService {
-  private shoppingUrl = `${baseUrl}/shopping`
-  private shopUrl = `${baseUrl}/shop`
+  private shoppingUrl = `${apiUri}/shopping`
+  private shopUrl = `${apiUri}/shop`
 
   constructor(private http: Http) {
   }

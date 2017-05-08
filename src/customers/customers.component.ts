@@ -5,6 +5,8 @@ import { ICustomer } from './customer'
 
 import ProductService, { IProduct } from '../product.service'
 
+import { signalRUri } from '../config'
+
 interface IRow {
   unsavedKey: string
   savedKey: string
@@ -61,30 +63,61 @@ class RowFactory {
 export default class Customers implements OnInit {
   customers: ICustomer[] = []
   products: IProduct[]
-  invalidRows: string[] = []
-  rowFactory: RowFactory
+  private invalidRows: string[] = []
+  private rowFactory: RowFactory
+  private connection: SignalR.Hub.Connection
+  private proxy: SignalR.Hub.Proxy
 
   constructor(
     private customersService: CustomersService,
     private productService: ProductService,
   ) {
     this.rowFactory = new RowFactory()
+    this.connection = $.hubConnection()
+    this.connection.url = signalRUri
+    this.connection.logging = true
+    this.connection.error((error: any) => console.error(error))
+    this.proxy = this.connection.createHubProxy('customerHub')
+
+    this.proxy.on('addCustomer', (customer) => this.addCustomer(customer))
+    this.proxy.on('deleteCustomer', (customer) => this.deleteCustomer(customer))
+
+    this.connection.start()
+      .done(() => console.log('connection started'))
+      .fail((error: any) => console.error(error))
   }
 
   ngOnInit(): void {
     this.customersService.getAll()
       .then(customers => this.customers = customers)
-      .then(() => console.log(this.customers))
 
     this.productService.getAll()
       .then(products => this.products = products)
   }
 
-  addInvalidRow(row: IRow) {
+  private addCustomer(customer: ICustomer) {
+    console.log('add called')
+    console.log(customer)
+    const index = this.customers.map(c => c.id).indexOf(customer.id)
+      if (index > -1) {
+        this.customers[index] = customer
+      } else {
+        this.customers.push(customer)
+      }
+  }
+
+  private deleteCustomer(customer: ICustomer) {
+    const index = this.customers.map(c => c.id).indexOf(customer.id)
+    if (index > -1) {
+      this.customers.splice(index, 1)
+    }
+  }
+
+  private addInvalidRow(row: IRow) {
     this.invalidRows.push(row.unsavedKey)
   }
 
-  removeInvalidRow(row: IRow) {
+  private removeInvalidRow(row: IRow) {
     const index = this.invalidRows.indexOf(row.unsavedKey)
     if (index > -1) {
       this.invalidRows.splice(index, 1)
@@ -108,6 +141,7 @@ export default class Customers implements OnInit {
     }
 
     this.customersService.post(row.data)
+      .then((customer: any) => this.proxy.invoke('add', customer))
   }
 
   onRowUpdated(event: any) {

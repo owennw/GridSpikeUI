@@ -82,6 +82,8 @@ module.exports = {
       {} // a map of your routes
     ),
 
+    new webpack.ProvidePlugin({ jQuery: 'jquery', $: 'jquery', jquery: 'jquery' }),
+
     new webpack.optimize.CommonsChunkPlugin({
       name: ['app', 'vendor', 'polyfills']
     }),

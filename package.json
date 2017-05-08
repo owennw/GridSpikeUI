@@ -27,6 +27,7 @@
     "core-js": "^2.4.1",
     "devextreme": "^16.2.6",
     "devextreme-angular": "^16.2.6",
+    "jquery": "^3.2.1",
     "rxjs": "5.0.1",
     "signalr": "^2.2.1",
     "zone.js": "^0.8.4"
@@ -42,6 +43,7 @@
     "canonical-path": "0.0.2",
     "css-loader": "^0.28.0",
     "css-to-string-loader": "^0.1.2",
+    "expose-loader": "^0.7.3",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
     "html-loader": "^0.4.5",

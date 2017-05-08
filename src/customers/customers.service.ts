@@ -3,7 +3,7 @@ import { Http, Headers, RequestOptions } from '@angular/http'
 
 import { ICustomer } from './customer'
 
-import { baseUrl } from '../config'
+import { apiUri } from '../config'
 
 const createHttpOptions = (object?: any) => {
   const headers = new Headers({ 'Content-Type': 'application/json' })
@@ -14,14 +14,14 @@ const createHttpOptions = (object?: any) => {
 
 @Injectable()
 export default class CustomersService {
-  private customersUrl = `${baseUrl}/customers`
+  private customersUrl = `${apiUri}/customers`
 
   constructor(private http: Http) {
   }
 
   getAll(): Promise<ICustomer[]> {
       return this.http
-        .get(this.customersUrl, { withCredentials: true })
+        .get(this.customersUrl)
         .toPromise()
         .then(response => response.json() as ICustomer[])
         .catch(this.handleError)
@@ -29,7 +29,7 @@ export default class CustomersService {
 
   get(id: number): Promise<ICustomer> {
     return this.http
-        .get(`${this.customersUrl}/${id}`, { withCredentials: true })
+        .get(`${this.customersUrl}/${id}`)
         .toPromise()
         .then(response => response.json() as ICustomer)
         .catch(this.handleError)
@@ -46,11 +46,11 @@ export default class CustomersService {
       .catch(this.handleError)
   }
 
-  post(customer: ICustomer) {
+  post(customer: ICustomer): Promise<ICustomer> {
     const body = JSON.stringify(customer)
     const options = createHttpOptions()
 
-    this.http
+    return this.http
       .post(this.customersUrl, body, options)
       .toPromise()
       .then(response => response.json())
