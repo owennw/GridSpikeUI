@@ -5,6 +5,45 @@ import { ICustomer } from './customer'
 
 import ProductService, { IProduct } from '../product.service'
 
+interface IRow {
+  unsavedKey: string
+  savedKey: string
+}
+
+class NewRow implements IRow {
+  constructor(private row: any) { }
+
+  get unsavedKey() {
+    return this.row.newData.__KEY__
+  }
+
+  get savedKey() {
+    return this.row.key.__KEY__
+  }
+}
+
+class UpdatedRow implements IRow {
+  constructor(private row: any) { }
+
+  get unsavedKey() {
+    return this.row.key.id
+  }
+
+  get savedKey() {
+    return this.unsavedKey
+  }
+}
+
+class RowFactory {
+  create(event: any): IRow {
+    if (!event.key.id) {
+      return new NewRow(event)
+    }
+
+    return new UpdatedRow(event)
+  }
+}
+
 @Component({
   templateUrl: './customers.component.html',
   styleUrls: ['./customers.component.css'],
@@ -13,55 +52,48 @@ import ProductService, { IProduct } from '../product.service'
 export default class Customers implements OnInit {
   customers: ICustomer[] = []
   products: IProduct[]
-  invalidRows: any[] = []
+  invalidRows: string[] = []
+  rowFactory: RowFactory
 
   constructor(
     private customersService: CustomersService,
     private productService: ProductService,
   ) {
+    this.rowFactory = new RowFactory()
   }
 
   ngOnInit(): void {
     this.customersService.getAll()
       .then(customers => this.customers = customers)
-      .then(() => console.log(this.customers))
 
     this.productService.getAll()
       .then(products => this.products = products)
   }
 
-  onRowValidating(event: any) {
-    console.log('validating')
-    console.log(event)
-    if (!event.isValid) {
-      if (!event.oldData) {
-        this.invalidRows.push(event.newData.__KEY__)
-      } else {
-        this.invalidRows.push(event.oldData.id)
-      }
-    } else {
-      if (!event.oldData) {
-        const index = this.invalidRows.indexOf(event.newData.__KEY__)
-        if (index > -1) {
-          this.invalidRows.splice(index, 1)
-        }
-      } else {
-        const index = this.invalidRows.indexOf(event.oldData.id)
-        if (index > -1) {
-          this.invalidRows.splice(index, 1)
-        }
-      }
-    }
+  addInvalidRow(row: IRow) {
+    this.invalidRows.push(row.unsavedKey)
+  }
 
-    console.log(this.invalidRows)
+  removeInvalidRow(row: IRow) {
+    const index = this.invalidRows.indexOf(row.unsavedKey)
+    if (index > -1) {
+      this.invalidRows.splice(index, 1)
+    }
+  }
+
+  onRowValidating(event: any) {
+    const row = this.rowFactory.create(event)
+    if (!event.isValid) {
+      this.addInvalidRow(row)
+    } else {
+      this.removeInvalidRow(row)
+    }
   }
 
   onRowInserted(event: any) {
-    console.log('insert')
-    console.log(event)
-    if (this.invalidRows.indexOf(event.data.__KEY__) > -1) {
+    const row = this.rowFactory.create(event)
+    if (this.invalidRows.indexOf(row.savedKey) > -1) {
       // Invalid
-      console.log('invalid insert')
       return
     }
 
@@ -69,11 +101,9 @@ export default class Customers implements OnInit {
   }
 
   onRowUpdated(event: any) {
-    console.log('update')
-    console.log(event)
-    if (this.invalidRows.indexOf(event.key.id) > -1) {
+    const row = this.rowFactory.create(event)
+    if (this.invalidRows.indexOf(row.savedKey) > -1) {
       // Invalid
-      console.log('invalid update')
       return
     }
 
@@ -81,7 +111,6 @@ export default class Customers implements OnInit {
   }
 
   onRowRemoved(event: any) {
-    console.log('delete')
     this.customersService.delete(event.data)
   }
 }

@@ -5,6 +5,13 @@ import { ICustomer } from './customer'
 
 import { baseUrl } from '../config'
 
+const createHttpOptions = (object?: any) => {
+  const headers = new Headers({ 'Content-Type': 'application/json' })
+  return object ?
+    new RequestOptions({ headers, body: JSON.stringify(object) }) :
+    new RequestOptions({ headers })
+}
+
 @Injectable()
 export default class CustomersService {
   private customersUrl = `${baseUrl}/customers`
@@ -30,22 +37,18 @@ export default class CustomersService {
 
   put(customer: ICustomer) {
     const body = JSON.stringify(customer)
-    console.log(body)
-    const headers = new Headers({ 'Content-Type': 'application/json' })
-    const options = new RequestOptions({ headers: headers })
+    const options = createHttpOptions()
 
     this.http
       .put(this.customersUrl, body, options)
       .toPromise()
-      .then(response => console.log(response.json()))
+      .then(response => response.json())
       .catch(this.handleError)
   }
 
   post(customer: ICustomer) {
     const body = JSON.stringify(customer)
-    console.log(body)
-    const headers = new Headers({ 'Content-Type': 'application/json' })
-    const options = new RequestOptions({ headers: headers })
+    const options = createHttpOptions()
 
     this.http
       .post(this.customersUrl, body, options)
@@ -55,10 +58,7 @@ export default class CustomersService {
   }
 
   delete(customer: ICustomer) {
-    const body = JSON.stringify(customer)
-    console.log(body)
-    const headers = new Headers({ 'Content-Type': 'application/json' })
-    const options = new RequestOptions({ headers: headers, body: body })
+    const options = createHttpOptions(customer)
 
     this.http
       .delete(this.customersUrl, options)
