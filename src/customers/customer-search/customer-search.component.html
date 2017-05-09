@@ -6,5 +6,13 @@
     (keyup)='keyUp.next(search.value)'
     placeholder="Search by name..."
   >
-  <div>{{searchQuery}}</div>
+  <dx-data-grid [dataSource]="customerSearchResults" class="search-grid">
+    <dxi-column dataField="firstName" caption="Forename(s)"></dxi-column>
+    <dxi-column dataField="lastName" caption="Surname"></dxi-column>
+    <dxi-column dataField="city" caption="City"></dxi-column>
+    <dxi-column dataField="favouriteFood.id" caption="Favourite Food">
+      <dxo-lookup [dataSource]="products" displayExpr="name" valueExpr="id"></dxo-lookup>
+    </dxi-column>
+    <dxi-column dataField="emailAddress" caption="E-mail Address"></dxi-column>
+  </dx-data-grid>
 </div>
