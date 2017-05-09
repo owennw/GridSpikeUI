@@ -8,6 +8,7 @@ import ProductService, { IProduct } from '../product.service'
 import EntitlementsService from '../entitlements/entitlements.service'
 import { IEntitlement } from '../entitlements/entitlement'
 
+import SignalRService from '../signalr.service'
 import { signalRUri } from '../config'
 
 interface IRow {
@@ -69,36 +70,37 @@ export default class Customers implements OnInit {
   editCustomers: boolean
   private invalidRows: string[] = []
   private rowFactory: RowFactory
-  private connection: SignalR.Hub.Connection
   private proxy: SignalR.Hub.Proxy
 
   constructor(
     private customersService: CustomersService,
+    private customersSignalRService: SignalRService,
     private productService: ProductService,
     private entitlementsService: EntitlementsService
   ) {
     this.rowFactory = new RowFactory()
-    this.connection = $.hubConnection()
-    this.connection.url = signalRUri
-    this.connection.logging = true
-    this.connection.error((error: any) => console.error(error))
-    this.proxy = this.connection.createHubProxy('customerHub')
 
-    this.proxy.on('addCustomer', (customer) => this.addCustomer(customer))
-    this.proxy.on('deleteCustomer', (customer) => this.deleteCustomer(customer))
+    this.registerHub = this.registerHub.bind(this)
 
-    this.connection.start()
-      .fail((error: any) => console.error(error))
+    this.proxy =
+      this.customersSignalRService.create(signalRUri, 'customerHub', this.registerHub)
   }
 
   ngOnInit(): void {
     this.entitlementsService.get()
-      .then((entitlement: IEntitlement) => this.editCustomers = entitlement.editCustomers)
+      .then((entitlement: IEntitlement) =>
+        this.editCustomers = entitlement.editCustomers
+      )
 
     this.getCustomers()
 
     this.productService.getAll()
       .then(products => this.products = products)
+  }
+
+  registerHub(proxy: SignalR.Hub.Proxy): void {
+    proxy.on('addCustomer', (customer) => this.addCustomer(customer))
+    proxy.on('deleteCustomer', (customer) => this.deleteCustomer(customer))
   }
 
   private getCustomers(): Promise<ICustomer[]> {
