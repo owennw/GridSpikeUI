@@ -68,6 +68,7 @@ export default class Customers implements OnInit {
   customers: ICustomer[] = []
   products: IProduct[]
   editCustomers: boolean
+  searchCustomers: boolean
   private invalidRows: string[] = []
   private rowFactory: RowFactory
   private proxy: SignalR.Hub.Proxy
@@ -88,9 +89,10 @@ export default class Customers implements OnInit {
 
   ngOnInit(): void {
     this.entitlementsService.get()
-      .then((entitlement: IEntitlement) =>
+      .then((entitlement: IEntitlement) => {
         this.editCustomers = entitlement.editCustomers
-      )
+        this.searchCustomers = entitlement.searchCustomers
+      })
 
     this.getCustomers()
 

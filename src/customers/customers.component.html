@@ -9,6 +9,7 @@
       (onRowUpdated)="onRowUpdated($event)"
       (onRowRemoved)="onRowRemoved($event)"
       (onRowValidating)="onRowValidating($event)"
+      class="customers-grid"
     >
       <dxo-editing
         *ngIf="editCustomers"
@@ -33,5 +34,6 @@
         <dxi-validation-rule type="email"></dxi-validation-rule>        
       </dxi-column>
     </dx-data-grid>
+    <customer-search *ngIf="searchCustomers"></customer-search>
   </page-body>
 </page>

@@ -14,7 +14,7 @@ export default class CustomersService {
 
   get(): Promise<IEntitlement> {
     return this.http
-      .get(`${this.entitlementsUrl}/1`)
+      .get(`${this.entitlementsUrl}/3`)
       .toPromise()
       .then(response => response.json() as IEntitlement)
       .catch(this.handleError)

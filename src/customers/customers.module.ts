@@ -6,6 +6,10 @@ import ComponentsModule from '../components/components.module'
 
 import Customers from './customers.component'
 import CustomersService from './customers.service'
+
+import CustomerSearch from './customer-search/customer-search.component'
+import CustomerSearchService from './customer-search/customer-search.service'
+
 import SignalRService from '../signalr.service'
 import ProductService from '../product.service'
 import EntitlementsService from '../entitlements/entitlements.service'
@@ -20,6 +24,7 @@ import CustomersRouting from './customers.routing'
  ],
   declarations: [
     Customers,
+    CustomerSearch,
   ],
   schemas: [
     NO_ERRORS_SCHEMA,
@@ -32,6 +37,7 @@ export default class CustomersModule {
       ngModule: CustomersModule,
       providers: [
         CustomersService,
+        CustomerSearchService,
         ProductService,
         EntitlementsService,
         SignalRService,
