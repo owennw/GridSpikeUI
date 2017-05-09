@@ -1,1 +1,10 @@
-<div>Hello world!</div>
+<div>
+  <label>Search customers (by name)</label>
+  <input
+    #search
+    type="text"
+    (keyup)='keyUp.next(search.value)'
+    placeholder="Search by name..."
+  >
+  <div>{{searchQuery}}</div>
+</div>
