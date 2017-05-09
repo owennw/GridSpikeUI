@@ -1,3 +1,6 @@
-export const serverUri = 'http://localhost:52559'
-export const apiUri = `${serverUri}/api`
-export const signalRUri = `${serverUri}/signalr/hubs`
+export const serverBaseUri = 'http://localhost:52559'
+export const entitlementsBaseUri = 'http://localhost:52560'
+
+export const apiUri = `${serverBaseUri}/api`
+export const entitlementsUri = `${entitlementsBaseUri}/api`
+export const signalRUri = `${serverBaseUri}/signalr/hubs`

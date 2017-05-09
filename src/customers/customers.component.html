@@ -11,6 +11,7 @@
       (onRowValidating)="onRowValidating($event)"
     >
       <dxo-editing
+        *ngIf="editCustomers"
         mode="batch"
         [allowUpdating]="true"
         [allowDeleting]="true"

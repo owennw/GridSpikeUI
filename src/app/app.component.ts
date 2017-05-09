@@ -1,5 +1,8 @@
 import { Component, ViewEncapsulation } from '@angular/core'
 
+import EntitlementsService from '../entitlements/entitlements.service'
+import { IEntitlement } from '../entitlements/entitlement'
+
 @Component({
   selector: 'shopping-app',
   template: `
@@ -7,8 +10,8 @@ import { Component, ViewEncapsulation } from '@angular/core'
     <nav>
       <ul>
         <li><a routerLink="/dashboard">Home</a></li>
-        <li><a routerLink="/customers">Customers</a></li>
-        <li><a routerLink="/shopping">Shopping</a></li>
+        <li *ngIf="viewCustomers"><a routerLink="/customers">Customers</a></li>
+        <li *ngIf="viewShopping"><a routerLink="/shopping">Shopping</a></li>
       </ul>
     </nav>
     <router-outlet></router-outlet>
@@ -23,4 +26,16 @@ import { Component, ViewEncapsulation } from '@angular/core'
 })
 
 export class App {
+  viewCustomers: boolean
+  viewShopping: boolean
+
+  constructor(private entitlementsService: EntitlementsService) { }
+
+  ngOnInit(): void {
+    this.entitlementsService.get()
+      .then((entitlement: IEntitlement) => {
+        this.viewCustomers = entitlement.viewCustomers
+        this.viewShopping = entitlement.viewShopping
+      })
+  }
 }

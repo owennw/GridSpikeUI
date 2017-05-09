@@ -8,6 +8,7 @@ import AppRoutingModule from './app-routing.module'
 import { App } from './app.component'
 
 import ComponentsModule from '../components/components.module'
+import EntitlementsModule from '../entitlements/entitlements.module'
 
 import Dashboard from '../dashboard/dashboard.component'
 
@@ -21,6 +22,7 @@ import ShoppingModule from '../shopping/shopping.module'
     HttpModule,
     AppRoutingModule,
     ComponentsModule,
+    EntitlementsModule,
     CustomersModule.forRoot(),
     ShoppingModule.forRoot(),
   ],

@@ -7,6 +7,7 @@ import ComponentsModule from '../components/components.module'
 import Customers from './customers.component'
 import CustomersService from './customers.service'
 import ProductService from '../product.service'
+import EntitlementsService from '../entitlements/entitlements.service'
 
 import CustomersRouting from './customers.routing'
 
@@ -28,7 +29,7 @@ export default class CustomersModule {
   static forRoot(): ModuleWithProviders {
     return {
       ngModule: CustomersModule,
-      providers: [CustomersService, ProductService],
+      providers: [CustomersService, ProductService, EntitlementsService],
     }
   }
 }

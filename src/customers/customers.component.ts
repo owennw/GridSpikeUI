@@ -5,6 +5,9 @@ import { ICustomer } from './customer'
 
 import ProductService, { IProduct } from '../product.service'
 
+import EntitlementsService from '../entitlements/entitlements.service'
+import { IEntitlement } from '../entitlements/entitlement'
+
 import { signalRUri } from '../config'
 
 interface IRow {
@@ -63,6 +66,7 @@ class RowFactory {
 export default class Customers implements OnInit {
   customers: ICustomer[] = []
   products: IProduct[]
+  editCustomers: boolean
   private invalidRows: string[] = []
   private rowFactory: RowFactory
   private connection: SignalR.Hub.Connection
@@ -71,6 +75,7 @@ export default class Customers implements OnInit {
   constructor(
     private customersService: CustomersService,
     private productService: ProductService,
+    private entitlementsService: EntitlementsService
   ) {
     this.rowFactory = new RowFactory()
     this.connection = $.hubConnection()
@@ -87,6 +92,9 @@ export default class Customers implements OnInit {
   }
 
   ngOnInit(): void {
+    this.entitlementsService.get()
+      .then((entitlement: IEntitlement) => this.editCustomers = entitlement.editCustomers)
+
     this.getCustomers()
 
     this.productService.getAll()
