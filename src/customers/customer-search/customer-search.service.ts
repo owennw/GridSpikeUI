@@ -11,7 +11,7 @@ export default class CustomerSearchService {
   constructor(private http: Http) {
   }
 
-  search(query: any): Observable<Response> {
-    return this.http.get(this.customerSearchUrl, { params: { query: query } })
+  search(queries: any): Observable<Response> {
+    return this.http.get(this.customerSearchUrl, { params: queries })
   }
 }

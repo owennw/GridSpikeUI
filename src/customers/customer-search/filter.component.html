@@ -1,0 +1,7 @@
+<select #operatorSelect (change)="onOperatorChange(operatorSelect.value)">
+  <option *ngFor="let operator of operators" [value]="operator">{{operator}}</option>
+</select>
+<select #filterSelect (change)="onFilterChange(filterSelect.value)">
+  <option *ngFor="let filter of getRemainingFilters()">{{filter.getName()}}</option>
+</select>
+<input #search type="text" required (blur)='update(search.value)'>

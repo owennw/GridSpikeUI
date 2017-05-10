@@ -1,11 +1,15 @@
 <div>
-  <label>Search customers (by name)</label>
-  <input
-    #search
-    type="text"
-    (keyup)='keyUp.next(search.value)'
-    placeholder="Search by name..."
-  >
+  <h2>Search customers</h2>
+
+  <label>Search by</label>
+  <!--<div *ngFor="let i of arr(filterCount).fill(1)">-->
+    <filter 
+      [remainingFilters]="remainingSearchableParams()">
+    </filter>
+    <button (click)="addFilter()">+</button>
+    <button (click)="removeFilter()">-</button>
+  <!--</div>-->
+  <button (click)="submit()">Search</button>
   <dx-data-grid [dataSource]="customerSearchResults" class="search-grid">
     <dxi-column dataField="firstName" caption="Forename(s)"></dxi-column>
     <dxi-column dataField="lastName" caption="Surname"></dxi-column>
