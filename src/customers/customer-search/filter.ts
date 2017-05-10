@@ -25,7 +25,11 @@ export class Filter implements IFilter {
   }
 
   updateOperator(operator: string) {
-    this.filter.operator = operator
+    if (operator !== '-') {
+      this.filter.operator = operator
+    } else {
+      this.filter.operator = undefined
+    }
   }
 
   updateValue(value: string) {
@@ -34,6 +38,13 @@ export class Filter implements IFilter {
 
   getQuery(): any {
     if (this.filter.value) {
+      if (this.filter.operator) {
+        return {
+          [this.filter.key]: this.filter.value,
+          [`${this.filter.key}_operator`]: this.filter.operator,
+        }
+      }
+
       return { [this.filter.key]: this.filter.value }
     }
 
@@ -53,7 +64,7 @@ export class Filter implements IFilter {
   }
 
   isValid(): boolean {
-    return this.hasValue() && !!this.filter.operator
+    return this.hasValue()
   }
 
   reset(): void {

@@ -9,7 +9,7 @@ import { IFilter } from './filter'
 })
 
 export default class Filter implements OnInit, OnDestroy {
-  operators: string[] = ['AND', 'OR', 'NOT']
+  operators: string[] = ['-', 'NOT']
   selectedOperator: string
   @Input() remainingFilters: IFilter[]
   selectedFilter: IFilter
