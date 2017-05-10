@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core'
+import { Component, Input, OnInit, OnDestroy } from '@angular/core'
 
 import FilterService from './filter.service'
 import { IFilter } from './filter'
@@ -8,7 +8,7 @@ import { IFilter } from './filter'
   templateUrl: './filter.component.html',
 })
 
-export default class Filter implements OnInit {
+export default class Filter implements OnInit, OnDestroy {
   operators: string[] = ['AND', 'OR', 'NOT']
   selectedOperator: string
   @Input() remainingFilters: IFilter[]
@@ -21,6 +21,14 @@ export default class Filter implements OnInit {
   ngOnInit(): void {
     this.selectedFilter = this.remainingFilters[0]
     this.selectedOperator = this.operators[0]
+    this.selectedFilter.updateOperator(this.selectedOperator)
+  }
+
+  ngOnDestroy(): void {
+    if (this.selectedFilter.isValid()) {
+      this.selectedFilter.reset()
+      this.filterService.removeFilter(this.selectedFilter)
+    }
   }
 
   onOperatorChange(value: string): void {
@@ -36,8 +44,11 @@ export default class Filter implements OnInit {
   }
 
   onFilterChange(name: string) {
-    this.filterService.removeFilter(this.selectedFilter)
-    this.selectedFilter.updateValue(undefined)
+    if (this.selectedFilter.hasValue()) {
+      this.filterService.removeFilter(this.selectedFilter)
+    }
+
+    this.selectedFilter.reset()
 
     this.selectedFilter = this.remainingFilters.find(rf => rf.getName() === name)
 
@@ -67,6 +78,6 @@ export default class Filter implements OnInit {
       return this.remainingFilters
     }
 
-    return this.remainingFilters.concat(this.selectedFilter)
+    return [this.selectedFilter].concat(this.remainingFilters)
   }
 }

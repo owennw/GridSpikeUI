@@ -20,7 +20,7 @@ import FilterService from './filter.service'
 export default class CustomerSearch implements OnInit {
   customerSearchResults: ICustomer[] = []
   products: IProduct[]
-  filterCount: number = 1
+  filterCountArray: number[] = []
   filters: IFilter[] = []
 
   constructor(
@@ -28,16 +28,10 @@ export default class CustomerSearch implements OnInit {
     private productService: ProductService,
     private filterService: FilterService
   ) {
-    filterService.filterAdded$.subscribe(filter => {
-      this.filters.push(filter)
-    })
+    this.filterCountArray.push(0)
 
-    filterService.filterRemoved$.subscribe(
-      filter => {
-        const index = this.filters.indexOf(filter)
-        this.filters.splice(index, 1)
-      }
-    )
+    filterService.filterAdded$.subscribe(filter => this.filters.push(filter))
+    filterService.filterRemoved$.subscribe(filter => this.filters.pop())
   }
 
   ngOnInit(): void {
@@ -45,29 +39,26 @@ export default class CustomerSearch implements OnInit {
       .then(products => this.products = products)
   }
 
+  canAdd(): boolean {
+    return this.filters.length === this.filterCountArray.length
+  }
+
+  canRemove(): boolean {
+    return this.filterCountArray.length > 1
+  }
+
   addFilter(): void {
-    this.filterCount++
+    this.filterCountArray.push(0)
   }
 
   removeFilter(): void {
-    this.filterCount--
+    this.filterCountArray.pop()
   }
 
   remainingSearchableParams(): IFilter[] {
-    // const existingKeys = this.filters.map(f => f.key)
-    // const existingKeysIndices = existingKeys.map(k => {
-    //   const customerFiltersKeys = customerFilters.map(cf => cf.key)
-    //   return customerFiltersKeys.indexOf(k)
-    // })
-
-    // let result = customerFilters
-    // for (let i = 0; i < existingKeysIndices.length; i++) {
-    //   result.splice(existingKeysIndices[i], 1)
-    // }
-
-    // return result
-
-    return customerFilters
+    const existingIds = this.filters.map(f => f.getId())
+    const result = customerFilters.filter(c => existingIds.indexOf(c.getId()) === -1)
+    return result
   }
 
   submit() {

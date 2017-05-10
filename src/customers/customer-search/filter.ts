@@ -6,6 +6,7 @@ export interface IFilter {
   isValid: Function
   getName: Function
   getId: Function
+  reset: Function
 }
 
 export interface IFilterObject {
@@ -53,5 +54,10 @@ export class Filter implements IFilter {
 
   isValid(): boolean {
     return this.hasValue() && !!this.filter.operator
+  }
+
+  reset(): void {
+    this.filter.value = undefined
+    this.filter.operator = undefined
   }
 }
