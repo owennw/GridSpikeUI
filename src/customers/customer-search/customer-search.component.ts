@@ -40,11 +40,15 @@ export default class CustomerSearch implements OnInit {
   }
 
   canAdd(): boolean {
-    return this.filters.length === this.filterCountArray.length
+    return this.canSubmit() && this.filters.length < customerFilters.length
   }
 
   canRemove(): boolean {
     return this.filterCountArray.length > 1
+  }
+
+  canSubmit(): boolean {
+    return this.filters.length === this.filterCountArray.length
   }
 
   addFilter(): void {
